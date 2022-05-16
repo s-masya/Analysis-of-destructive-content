@@ -5,7 +5,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 
 import docx
 import string
@@ -118,6 +118,12 @@ class Page(FloatLayout):
         self.butt1.bind(on_press=self.Analis)
         self.add_widget(self.butt1)
 
+        self.butt2=Button(text="Файл")
+        self.butt2.size_hint=(.1,.01)
+        self.butt2.pos_hint={'x':.8,'y':.1}
+        self.butt2.bind(on_press=self.FileChoose)
+        self.add_widget(self.butt2)
+
         self.add_widget(Label(
             text='Результат:',
             size_hint=(0.001,0.001),
@@ -132,10 +138,34 @@ class Page(FloatLayout):
     def Analis(self,instance):
         self.result.text=analis(normal(self.textbar.text))
 
+    def FileChoose(self, instance):
+        self.lay=FileChooserLay()
+        self.popup=FileChooser(content=self.lay)
+        self.popup.open()
+        self.lay.ids.butcl.bind(on_press=self.popup.dismiss)
+        self.lay.ids.butop.bind(on_press=self.opendoc)
 
+    def opendoc(self, instance):
+        text=''
+        try:
+            fileDoc = docx.Document(self.lay.ids.file_chooser.selection[0]) #загрузка текста из вордовского документа в систему
+            for paragraph in fileDoc.paragraphs:
+                text+=paragraph.text+'\n'
+            self.textbar.text=text
+            self.popup.dismiss()
+        except:
+            pass
+
+class FileChooser(Popup):
+    pass
+
+class FileChooserLay(FloatLayout):
+    pass
+        
 
 class AnalisApp(App):
     def build(self):
+        self.load_kv('AnalizeTextsKivy.kv')
         return Page()
 
 if __name__ == "__main__":

@@ -154,9 +154,19 @@ class Page(FloatLayout):
                 negative = 0
             if positive is None:
                 positive = 0
-        resultskeyval=results[0].items()
+
+        if (neutral > negative) and (neutral > positive):
+            emotional = 'Нейтральная'
+        elif (positive > negative) and (positive > neutral):
+            emotional = 'Позитивная'
+        elif (negative > positive) and (negative > neutral):
+            emotional = 'Негативная'
+        else:
+             emotional = '-'
+
+        '''resultskeyval=results[0].items()
         resultlist=list(resultskeyval)
-        emotional=max(resultlist,key=lambda i : i[1])
+        emotional=max(resultlist,key=lambda i : i[1])'''
 
         numb = len(dictionary.diction)
         NumbOfWords = len(textt.split())
@@ -180,12 +190,12 @@ class Page(FloatLayout):
         perf=percents[0]/NumbOfWords*100
         print (emotional)
 
-        if((perf>5 or perf<5 and counal>10 and (emotional[0]=='neutral' or emotional[0]=='positive')) and emotional[0]!='negative'):
+        if((perf>5 or perf<5 and counal>10 and (emotional =='Нейтральная' or emotional =='Позитивная')) and emotional !='Негативная'):
             restext='Предварительная оценка: деструктивный контент\n'
         else:
-            restext='Предварительная оценка: недеструктивный контент\n'
+            restext='Предварительная оценка: недеструктивный контент\n\n\n'
 
-        restext+='1. Эмоциональная окраска: '+emotional[0]+'\n2. Деструктивные слова в тексте составляют '+str(f"{(round(counall,2)):.2f}")+'%\n3. Академическая тошнота '+str(f"{(round(perf,2)):.2f}")+'%'
+        restext+='1. Эмоциональная окраска: '+ emotional +'\n2. Деструктивные слова в тексте составляют '+str(f"{(round(counall,2)):.2f}")+'%\n3. Академическая тошнота '+str(f"{(round(perf,2)):.2f}")+'%'
         self.result.text=restext
         self.suspic.text=sustext
 

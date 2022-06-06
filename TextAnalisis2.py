@@ -191,11 +191,12 @@ class Page(FloatLayout):
         print (emotional)
 
         if((perf>5 or perf<5 and counal>10 and (emotional =='Нейтральная' or emotional =='Позитивная')) and emotional !='Негативная'):
-            restext='Предварительная оценка: деструктивный контент\n'
+            restext='Предварительная оценка: деструктивный контент\n\n\n'
         else:
             restext='Предварительная оценка: недеструктивный контент\n\n\n'
 
         restext+='1. Эмоциональная окраска: '+ emotional +'\n2. Деструктивные слова в тексте составляют '+str(f"{(round(counall,2)):.2f}")+'%\n3. Академическая тошнота '+str(f"{(round(perf,2)):.2f}")+'%'
+        restext+= '\n\n\nПри выявлении деструктивного контента (противоправной информации) следует подать обращение на официальном сайте Роскомнадзора: https://eais.rkn.gov.ru/feedback/'
         self.result.text=restext
         self.suspic.text=sustext
 
